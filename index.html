@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthenCore Analytics - Professional Assessment Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            cursor: pointer;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            color: #667eea;
+        }
+
+        .language-selector {
+            padding: 8px 15px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            color: white;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px 30px;
+            border: 2px solid white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Assessment Grid */
+        .assessments-section {
+            background: white;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 50px;
+        }
+
+        .assessments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .assessment-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .assessment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-right: 15px;
+        }
+
+        .card-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fb;
+            border-radius: 8px;
+        }
+
+        .card-duration {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .card-price {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .card-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .sample-button {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sample-button:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: #f8f9fb;
+            padding: 80px 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 50px 20px 30px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        .footer-tagline {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .footer-copyright {
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+
+        /* Assessment Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            max-height: 90vh;
+            margin: 30px auto;
+            border-radius: 15px;
+            padding: 40px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        /* Assessment Interface */
+        .assessment-interface {
+            display: none;
+            background: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .assessment-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .assessment-progress {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: #e1e5e9;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .question-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .response-options {
+            display: flex;
+            justify-content: space-between;
+            background: #f8f9fb;
+            padding: 20px;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .response-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            min-width: 100px;
+            flex: 1;
+        }
+
+        .response-option:hover {
+            background: #e8eaf6;
+        }
+
+        .response-option.selected {
+            background: #667eea;
+            color: white;
+        }
+
+        .response-option input[type="radio"] {
+            margin-bottom: 8px;
+            transform: scale(1.3);
+        }
+
+        .response-label {
+            font-size: 0.9em;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .assessment-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            background: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .overall-score {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .score-value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .dimension-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .dimension-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .dimension-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .dimension-score {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .dimension-level {
+            color: #666;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .reflection-prompt {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            color: #2c5282;
+            font-style: italic;
+        }
+
+        .download-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .download-btn {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .download-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Language Specific Styles */
+        [lang="ar"] {
+            direction: rtl;
+            text-align: right;
+        }
+
+        /* Individual Assessment Themes */
+        .fvai { border-left-color: #ff6b6b; }
+        .cairplus { border-left-color: #4ecdc4; }
+        .careerlaunch { border-left-color: #45b7d1; }
+        .digitalwellness { border-left-color: #96ceb4; }
+        .genz { border-left-color: #9b59b6; }
+        .innovation { border-left-color: #667eea; }
+        .leadership { border-left-color: #f39c12; }
+        .relationship { border-left-color: #e74c3c; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .assessments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .response-options {
+                flex-direction: column;
+            }
+
+            .response-option {
+                min-width: auto;
+            }
+
+            .assessment-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Website -->
+    <div id="mainWebsite">
+        <!-- Header -->
+        <header class="header">
+            <div class="nav-container">
+                <div class="logo" onclick="showSection('home')">AuthenCore Analytics</div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a onclick="showSection('home')">Home</a></li>
+                        <li><a onclick="showSection('assessments')">Assessments</a></li>
+                        <li><a onclick="showSection('features')">Features</a></li>
+                        <li><a onclick="showSection('contact')">Contact</a></li>
+                    </ul>
+                </nav>
+                <select class="language-selector" onchange="changeLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                    <option value="ar">العربية</option>
+                    <option value="es">Español</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 data-lang-key="hero-title">Professional Assessment Platform</h1>
+                <p data-lang-key="hero-description">Unlock human potential with scientifically-backed assessments for personal and organizational growth</p>
+                <a href="#" class="cta-button" onclick="showSection('assessments')" data-lang-key="hero-cta">Explore Assessments</a>
+            </div>
+        </section>
+
+        <!-- Assessments Section -->
+        <section id="assessments" class="assessments-section">
+            <div class="container">
+                <h2 class="section-title" data-lang-key="assessments-title">Our Assessment Suite</h2>
+                <div class="assessments-grid">
+                    
+                    <!-- FVAI -->
+                    <div class="assessment-card fvai">
+                        <div class="card-header">
+                            <div class="card-icon">🙏</div>
+                            <div class="card-title" data-lang-key="fvai-title">Faith & Values Alignment Index</div>
+                        </div>
+                        <div class="card-description" data-lang-key="fvai-description">
+                            Understand how your personal and organizational values align with your faith and integrity practices.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">20-25 min • 53 questions</span>
+                            <span class="card-price">$39.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('fvai')">Start FVAI Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('fvai')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                    <!-- CAIR+ -->
+                    <div class="assessment-card cairplus">
+                        <div class="card-header">
+                            <div class="card-icon">🌍</div>
+                            <div class="card-title">Cultural Adaptation & Integration Readiness</div>
+                        </div>
+                        <div class="card-description">
+                            Measure your readiness for cultural transitions and integration in new environments.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">30-35 min • 125 questions</span>
+                            <span class="card-price">$49.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('cairplus')">Start CAIR+ Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('cairplus')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                    <!-- CareerLaunch -->
+                    <div class="assessment-card careerlaunch">
+                        <div class="card-header">
+                            <div class="card-icon">🚀</div>
+                            <div class="card-title">CareerLaunch Orientation</div>
+                        </div>
+                        <div class="card-description">
+                            Comprehensive career assessment covering interests, aptitudes, personality, and values.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">40-45 min • 165 questions</span>
+                            <span class="card-price">$59.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('careerlaunch')">Start CareerLaunch Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('careerlaunch')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Digital Wellness -->
+                    <div class="assessment-card digitalwellness">
+                        <div class="card-header">
+                            <div class="card-icon">💻</div>
+                            <div class="card-title">Digital Wellness Assessment</div>
+                        </div>
+                        <div class="card-description">
+                            Evaluate digital habits, screen time management, and online wellbeing for balanced digital life.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">20-25 min • 55 questions</span>
+                            <span class="card-price">$29.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('digitalwellness')">Start Digital Wellness Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('digitalwellness')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Generation Z Future Readiness -->
+                    <div class="assessment-card genz">
+                        <div class="card-header">
+                            <div class="card-icon">⚡</div>
+                            <div class="card-title">Generation Z Future Readiness</div>
+                        </div>
+                        <div class="card-description">
+                            Assess future readiness for young adults aged 15-25 in education, work, and life.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">20-25 min • 65 questions</span>
+                            <span class="card-price">$34.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('genz')">Start Gen Z Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('genz')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Innovation Mindset -->
+                    <div class="assessment-card innovation">
+                        <div class="card-header">
+                            <div class="card-icon">💡</div>
+                            <div class="card-title">Innovation Mindset Assessment</div>
+                        </div>
+                        <div class="card-description">
+                            Measure innovation potential across curiosity, risk-taking, creativity, adaptability, and collaboration.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">15-20 min • 45 questions</span>
+                            <span class="card-price">$42.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('innovation')">Start Innovation Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('innovation')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Authentic Leadership -->
+                    <div class="assessment-card leadership">
+                        <div class="card-header">
+                            <div class="card-icon">👑</div>
+                            <div class="card-title">Authentic Leadership Assessment</div>
+                        </div>
+                        <div class="card-description">
+                            Assess leadership authenticity across self-awareness, relational transparency, and moral perspective.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">15-20 min • 45 questions</span>
+                            <span class="card-price">$44.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('leadership')">Start Leadership Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('leadership')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Relationship Compatibility -->
+                    <div class="assessment-card relationship">
+                        <div class="card-header">
+                            <div class="card-icon">💕</div>
+                            <div class="card-title">Relationship Compatibility</div>
+                        </div>
+                        <div class="card-description">
+                            Assess compatibility in values, communication, conflict resolution, and future goals.
+                        </div>
+                        <div class="card-details">
+                            <span class="card-duration">15-20 min • 45 questions</span>
+                            <span class="card-price">$39.99</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-button" onclick="startAssessment('relationship')">Start Relationship Assessment</button>
+                            <button class="sample-button" onclick="showSampleReport('relationship')">View Sample Report</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title" data-lang-key="features-title">Why Choose AuthenCore Analytics?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔬</div>
+                        <div class="feature-title" data-lang-key="feature1-title">Scientifically Validated</div>
+                        <div class="feature-description" data-lang-key="feature1-description">All assessments are based on peer-reviewed research and proven psychological frameworks.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">Professional Reports</div>
+                        <div class="feature-description">Detailed PDF reports for personal development and professional use with actionable insights.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-title">Secure & Private</div>
+                        <div class="feature-description">GDPR-compliant with enterprise-grade security for your data protection and privacy.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌐</div>
+                        <div class="feature-title">Multilingual Support</div>
+                        <div class="feature-description">Available in English, French, Arabic, Spanish, and German for global accessibility.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-title">Instant Results</div>
+                        <div class="feature-description">Get your detailed assessment results and reports immediately upon completion.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-title">Actionable Insights</div>
+                        <div class="feature-description">Each report includes specific recommendations and reflection prompts for growth.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a onclick="showModal('about')">About Us</a>
+                    <a onclick="showModal('privacy')">Privacy Policy</a>
+                    <a onclick="showModal('compliance')">Compliance</a>
+                    <a onclick="showModal('contact')">Contact</a>
+                    <a onclick="showModal('support')">Support</a>
+                </div>
+                <div class="footer-tagline" data-lang-key="footer-tagline">"Empowering human potential with precision assessments."</div>
+                <div class="footer-copyright">© 2025 AuthenCore Analytics. All rights reserved.</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Assessment Interface -->
+    <div id="assessmentInterface" class="assessment-interface">
+        <div class="container">
+            <div class="assessment-header">
+                <h1 id="assessmentTitle">Assessment</h1>
+                <p id="assessmentSubtitle">Complete all questions for accurate results</p>
+                <button class="btn btn-secondary" onclick="exitAssessment()" style="position: absolute; top: 20px; right: 20px;">Exit Assessment</button>
+            </div>
+
+            <div class="assessment-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    Question <span id="currentQuestion">1</span> of <span id="totalQuestions">0</span>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-text" id="questionText">
+                    <span class="question-number" id="questionNumber">Q1.</span>
+                    <span id="questionContent">Loading question...</span>
+                </div>
+                <div class="response-options" id="responseOptions">
+                    <!-- Response options will be generated here -->
+                </div>
+            </div>
+
+            <div class="assessment-controls">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>Previous</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next Question</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section">
+        <div class="container">
+            <div class="results-header">
+                <h1 id="resultsTitle">Your Assessment Results</h1>
+                <p id="resultsSubtitle">Comprehensive analysis of your responses</p>
+                <button class="btn btn-secondary" onclick="returnToHome()" style="position: absolute; top: 20px; right: 20px;">Return to Home</button>
+            </div>
+
+            <div class="overall-score">
+                <div class="score-value" id="overallScore">--</div>
+                <div id="overallLevel">Overall Score</div>
+            </div>
+
+            <div class="dimension-results" id="dimensionResults">
+                <!-- Dimension results will be populated here -->
+            </div>
+
+            <div class="download-section">
+                <div class="download-btn" onclick="downloadPersonalReport()">
+                    📋 Download Personal Report
+                </div>
+                <div class="download-btn" onclick="downloadProfessionalReport()">
+                    👔 Download Professional Report
+                </div>
+                <div class="download-btn" onclick="downloadCertificate()">
+                    🏆 Download Certificate
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalContent">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let currentLanguage = 'en';
+        let currentAssessmentType = '';
+        let currentQuestionIndex = 0;
+        let assessmentQuestions = [];
+        let userResponses = [];
+        let userInfo = {};
+
+        // Translation data
+        const translations = {
+            en: {
+                'hero-title': 'Professional Assessment Platform',
+                'hero-description': 'Unlock human potential with scientifically-backed assessments for personal and organizational growth',
+                'hero-cta': 'Explore Assessments',
+                'assessments-title': 'Our Assessment Suite',
+                'features-title': 'Why Choose AuthenCore Analytics?',
+                'feature1-title': 'Scientifically Validated',
+                'feature1-description': 'All assessments are based on peer-reviewed research and proven psychological frameworks.',
+                'footer-tagline': '"Empowering human potential with precision assessments."',
+                'fvai-title': 'Faith & Values Alignment Index',
+                'fvai-description': 'Understand how your personal and organizational values align with your faith and integrity practices.'
+            },
+            fr: {
+                'hero-title': 'Plateforme d\'Évaluation Professionnelle',
+                'hero-description': 'Libérez le potentiel humain avec des évaluations scientifiquement validées pour la croissance personnelle et organisationnelle',
+                'hero-cta': 'Explorer les Évaluations',
+                'assessments-title': 'Notre Suite d\'Évaluations',
+                'features-title': 'Pourquoi Choisir AuthenCore Analytics?',
+                'feature1-title': 'Scientifiquement Validé',
+                'feature1-description': 'Toutes les évaluations sont basées sur des recherches évaluées par des pairs et des cadres psychologiques éprouvés.',
+                'footer-tagline': '"Autonomiser le potentiel humain avec des évaluations précises."',
+                'fvai-title': 'Indice d\'Alignement Foi et Valeurs',
+                'fvai-description': 'Comprenez comment vos valeurs personnelles et organisationnelles s\'alignent avec votre foi et vos pratiques d\'intégrité.'
+            },
+            ar: {
+                'hero-title': 'منصة التقييم المهنية',
+                'hero-description': 'اكتشف الإمكانات البشرية مع التقييمات المدعومة علمياً للنمو الشخصي والمؤسسي',
+                'hero-cta': 'استكشف التقييمات',
+                'assessments-title': 'مجموعة التقييمات لدينا',
+                'features-title': 'لماذا تختار AuthenCore Analytics؟',
+                'feature1-title': 'مُتحقق منه علمياً',
+                'feature1-description': 'جميع التقييمات مبنية على أبحاث محكمة وأطر نفسية مثبتة.',
+                'footer-tagline': '"تمكين الإمكانات البشرية بتقييمات دقيقة."',
+                'fvai-title': 'مؤشر محاذاة الإيمان والقيم',
+                'fvai-description': 'فهم كيفية توافق قيمك الشخصية والمؤسسية مع إيمانك وممارسات النزاهة.'
+            },
+            es: {
+                'hero-title': 'Plataforma de Evaluación Profesional',
+                'hero-description': 'Desbloquea el potencial humano con evaluaciones respaldadas científicamente para el crecimiento personal y organizacional',
+                'hero-cta': 'Explorar Evaluaciones',
+                'assessments-title': 'Nuestra Suite de Evaluaciones',
+                'features-title': '¿Por qué elegir AuthenCore Analytics?',
+                'feature1-title': 'Científicamente Validado',
+                'feature1-description': 'Todas las evaluaciones están basadas en investigación revisada por pares y marcos psicológicos probados.',
+                'footer-tagline': '"Empoderando el potencial humano con evaluaciones precisas."',
+                'fvai-title': 'Índice de Alineación de Fe y Valores',
+                'fvai-description': 'Comprende cómo tus valores personales y organizacionales se alinean con tu fe y prácticas de integridad.'
+            },
+            de: {
+                'hero-title': 'Professionelle Bewertungsplattform',
+                'hero-description': 'Erschließen Sie menschliches Potenzial mit wissenschaftlich fundierten Bewertungen für persönliches und organisatorisches Wachstum',
+                'hero-cta': 'Bewertungen Erkunden',
+                'assessments-title': 'Unsere Bewertungssuite',
+                'features-title': 'Warum AuthenCore Analytics wählen?',
+                'feature1-title': 'Wissenschaftlich Validiert',
+                'feature1-description': 'Alle Bewertungen basieren auf peer-reviewed Forschung und bewährten psychologischen Rahmenwerken.',
+                'footer-tagline': '"Menschliches Potenzial mit präzisen Bewertungen stärken."',
+                'fvai-title': 'Glaube & Werte Ausrichtungsindex',
+                'fvai-description': 'Verstehen Sie, wie Ihre persönlichen und organisatorischen Werte mit Ihrem Glauben und Integritätspraktiken übereinstimmen.'
+            }
+        };
+
+        // Assessment Questions Database
+        const assessmentData = {
+            innovation: {
+                title: "Innovation Mindset Assessment",
+                subtitle: "Discover your innovation potential across 5 key dimensions",
+                questions: [
+                    { id: 1, text: "I enjoy exploring new topics outside my usual work.", dimension: "Curiosity & Exploration" },
+                    { id: 2, text: "I often ask questions to understand things deeply.", dimension: "Curiosity & Exploration" },
+                    { id: 3, text: "I seek out learning opportunities regularly.", dimension: "Curiosity & Exploration" },
+                    { id: 4, text: "I enjoy challenging myself with unfamiliar subjects.", dimension: "Curiosity & Exploration" },
+                    { id: 5, text: "I read or watch content from diverse fields.", dimension: "Curiosity & Exploration" },
+                    { id: 6, text: "I like experimenting with new ways of doing things.", dimension: "Curiosity & Exploration" },
+                    { id: 7, text: "I feel energized when learning something new.", dimension: "Curiosity & Exploration" },
+                    { id: 8, text: "I am curious about how things work.", dimension: "Curiosity & Exploration" },
+                    { id: 9, text: "I feel comfortable taking calculated risks.", dimension: "Risk-Taking & Courage" },
+                    { id: 10, text: "I challenge the status quo when needed.", dimension: "Risk-Taking & Courage" },
+                    { id: 11, text: "I take initiative even when uncertain about outcomes.", dimension: "Risk-Taking & Courage" },
+                    { id: 12, text: "I am not afraid to share unconventional ideas.", dimension: "Risk-Taking & Courage" },
+                    { id: 13, text: "I see failure as part of the innovation process.", dimension: "Risk-Taking & Courage" },
+                    { id: 14, text: "I speak up even if my views are different.", dimension: "Risk-Taking & Courage" },
+                    { id: 15, text: "I pursue ideas despite potential criticism.", dimension: "Risk-Taking & Courage" },
+                    { id: 16, text: "I make decisions even when information is incomplete.", dimension: "Risk-Taking & Courage" },
+                    { id: 17, text: "I come up with original ideas easily.", dimension: "Creativity & Imagination" },
+                    { id: 18, text: "I see connections between unrelated concepts.", dimension: "Creativity & Imagination" },
+                    { id: 19, text: "I enjoy brainstorming sessions.", dimension: "Creativity & Imagination" },
+                    { id: 20, text: "I think of multiple solutions to a problem.", dimension: "Creativity & Imagination" },
+                    { id: 21, text: "I use imagination to create new possibilities.", dimension: "Creativity & Imagination" },
+                    { id: 22, text: "I enjoy tasks that require creativity.", dimension: "Creativity & Imagination" },
+                    { id: 23, text: "I often think outside traditional frameworks.", dimension: "Creativity & Imagination" },
+                    { id: 24, text: "I can visualize innovative outcomes clearly.", dimension: "Creativity & Imagination" },
+                    { id: 25, text: "I recover quickly from setbacks.", dimension: "Resilience & Adaptability" },
+                    { id: 26, text: "I remain positive when projects face challenges.", dimension: "Resilience & Adaptability" },
+                    { id: 27, text: "I adapt easily to changing circumstances.", dimension: "Resilience & Adaptability" },
+                    { id: 28, text: "I keep working on ideas despite obstacles.", dimension: "Resilience & Adaptability" },
+                    { id: 29, text: "I learn from failure to improve future approaches.", dimension: "Resilience & Adaptability" },
+                    { id: 30, text: "I adjust my methods if I see something is not working.", dimension: "Resilience & Adaptability" },
+                    { id: 31, text: "I maintain motivation even during uncertainty.", dimension: "Resilience & Adaptability" },
+                    { id: 32, text: "I see challenges as opportunities to grow.", dimension: "Resilience & Adaptability" },
+                    { id: 33, text: "I value working with people from different backgrounds.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 34, text: "I actively seek diverse perspectives on ideas.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 35, text: "I enjoy collaborating with others to innovate.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 36, text: "I respect opinions different from my own.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 37, text: "I adapt my ideas based on team feedback.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 38, text: "I believe diversity leads to better innovation.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 39, text: "I encourage others to contribute their ideas.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 40, text: "I build on others' ideas to create stronger solutions.", dimension: "Collaboration & Diversity Openness" },
+                    { id: 41, text: "I am always creative in everything I do.", dimension: "Distortion" },
+                    { id: 42, text: "I never fail in my ideas.", dimension: "Distortion" },
+                    { id: 43, text: "I am perfect at working with all types of people.", dimension: "Distortion" },
+                    { id: 44, text: "I never feel nervous about taking risks.", dimension: "Distortion" },
+                    { id: 45, text: "I am always positive no matter what happens.", dimension: "Distortion" }
+                ]
+            },
+            fvai: {
+                title: "Faith & Values Alignment Index",
+                subtitle: "Assess your values alignment across faith and integrity dimensions",
+                questions: [
+                    { id: 1, text: "Faith is central to my daily decisions.", dimension: "Faith Centrality" },
+                    { id: 2, text: "I regularly reflect on my spiritual beliefs.", dimension: "Faith Centrality" },
+                    { id: 3, text: "My faith guides my actions in difficult situations.", dimension: "Faith Centrality" },
+                    { id: 4, text: "I actively seek spiritual growth and understanding.", dimension: "Faith Centrality" },
+                    { id: 5, text: "My personal values align with my faith teachings.", dimension: "Values Alignment" },
+                    { id: 6, text: "I live according to my core beliefs consistently.", dimension: "Values Alignment" },
+                    { id: 7, text: "My actions reflect my stated values.", dimension: "Values Alignment" },
+                    { id: 8, text: "I regularly examine if my life aligns with my values.", dimension: "Values Alignment" },
+                    { id: 9, text: "I show compassion to those in need.", dimension: "Compassion & Service" },
+                    { id: 10, text: "I actively serve my community when possible.", dimension: "Compassion & Service" },
+                    { id: 11, text: "I put others' needs before my own when appropriate.", dimension: "Compassion & Service" },
+                    { id: 12, text: "I feel called to help those less fortunate.", dimension: "Compassion & Service" },
+                    { id: 13, text: "I forgive others who have wronged me.", dimension: "Forgiveness & Humility" },
+                    { id: 14, text: "I admit when I make mistakes.", dimension: "Forgiveness & Humility" },
+                    { id: 15, text: "I approach others with humility and respect.", dimension: "Forgiveness & Humility" },
+                    { id: 16, text: "I seek forgiveness when I have hurt others.", dimension: "Forgiveness & Humility" },
+                    { id: 17, text: "I am open to different spiritual perspectives.", dimension: "Spiritual Openness" },
+                    { id: 18, text: "I engage in meaningful spiritual practices regularly.", dimension: "Spiritual Openness" },
+                    { id: 19, text: "I seek to understand others' faith experiences.", dimension: "Spiritual Openness" },
+                    { id: 20, text: "I am willing to discuss my faith with others.", dimension: "Spiritual Openness" },
+                    { id: 21, text: "I act with integrity even when no one is watching.", dimension: "Moral Consistency" },
+                    { id: 22, text: "My private and public behavior are consistent.", dimension: "Moral Consistency" },
+                    { id: 23, text: "I make ethical choices even when it's difficult.", dimension: "Moral Consistency" },
+                    { id: 24, text: "I stand up for what is right regardless of consequences.", dimension: "Moral Consistency" },
+                    { id: 25, text: "I am always truthful in all situations.", dimension: "Distortion" },
+                    { id: 26, text: "I never have doubts about my faith.", dimension: "Distortion" },
+                    { id: 27, text: "I am perfect in living out my values.", dimension: "Distortion" },
+                    { id: 28, text: "I never struggle with moral decisions.", dimension: "Distortion" },
+                    { id: 29, text: "Everyone always sees me as a moral example.", dimension: "Distortion" }
+                ]
+            },
+            leadership: {
+                title: "Authentic Leadership Assessment",
+                subtitle: "Evaluate your leadership authenticity and effectiveness",
+                questions: [
+                    { id: 1, text: "I understand how my values influence my actions.", dimension: "Self-Awareness" },
+                    { id: 2, text: "I am aware of my strengths as a leader.", dimension: "Self-Awareness" },
+                    { id: 3, text: "I acknowledge my weaknesses openly.", dimension: "Self-Awareness" },
+                    { id: 4, text: "I reflect on how my behavior impacts others.", dimension: "Self-Awareness" },
+                    { id: 5, text: "I seek feedback to understand myself better.", dimension: "Self-Awareness" },
+                    { id: 6, text: "I recognize my emotions during leadership decisions.", dimension: "Self-Awareness" },
+                    { id: 7, text: "I am honest with myself about my limitations.", dimension: "Self-Awareness" },
+                    { id: 8, text: "I know what motivates me to lead.", dimension: "Self-Awareness" },
+                    { id: 9, text: "I openly share my thoughts with my team.", dimension: "Relational Transparency" },
+                    { id: 10, text: "I admit mistakes to those I lead.", dimension: "Relational Transparency" },
+                    { id: 11, text: "I am honest about my feelings with colleagues.", dimension: "Relational Transparency" },
+                    { id: 12, text: "I share personal experiences to build trust.", dimension: "Relational Transparency" },
+                    { id: 13, text: "I express my opinions clearly.", dimension: "Relational Transparency" },
+                    { id: 14, text: "I communicate authentically without pretending.", dimension: "Relational Transparency" },
+                    { id: 15, text: "I let others know when I am uncertain.", dimension: "Relational Transparency" },
+                    { id: 16, text: "I avoid hiding information that affects others.", dimension: "Relational Transparency" },
+                    { id: 17, text: "I listen to different perspectives before making decisions.", dimension: "Balanced Processing" },
+                    { id: 18, text: "I seek input from team members before acting.", dimension: "Balanced Processing" },
+                    { id: 19, text: "I weigh the pros and cons before deciding.", dimension: "Balanced Processing" },
+                    { id: 20, text: "I change my mind when evidence suggests better options.", dimension: "Balanced Processing" },
+                    { id: 21, text: "I avoid making judgments without understanding context.", dimension: "Balanced Processing" },
+                    { id: 22, text: "I value diverse opinions in decision-making.", dimension: "Balanced Processing" },
+                    { id: 23, text: "I remain objective even when opinions differ from mine.", dimension: "Balanced Processing" },
+                    { id: 24, text: "I consider multiple solutions before choosing one.", dimension: "Balanced Processing" },
+                    { id: 25, text: "I act according to my core values even under pressure.", dimension: "Internalized Moral Perspective" },
+                    { id: 26, text: "I prioritize ethical standards over short-term gains.", dimension: "Internalized Moral Perspective" },
+                    { id: 27, text: "I remain true to my beliefs despite external pressure.", dimension: "Internalized Moral Perspective" },
+                    { id: 28, text: "I do what is right even if it is unpopular.", dimension: "Internalized Moral Perspective" },
+                    { id: 29, text: "I uphold organizational values in my decisions.", dimension: "Internalized Moral Perspective" },
+                    { id: 30, text: "I encourage others to act with integrity.", dimension: "Internalized Moral Perspective" },
+                    { id: 31, text: "I consider the long-term impact of my decisions.", dimension: "Internalized Moral Perspective" },
+                    { id: 32, text: "I lead by example in ethical behavior.", dimension: "Internalized Moral Perspective" },
+                    { id: 33, text: "I feel confident in my leadership abilities.", dimension: "Leadership Confidence & Impact" },
+                    { id: 34, text: "I believe I positively influence my team.", dimension: "Leadership Confidence & Impact" },
+                    { id: 35, text: "I motivate others to achieve their goals.", dimension: "Leadership Confidence & Impact" },
+                    { id: 36, text: "I adapt my leadership style to different situations.", dimension: "Leadership Confidence & Impact" },
+                    { id: 37, text: "I handle leadership challenges effectively.", dimension: "Leadership Confidence & Impact" },
+                    { id: 38, text: "I feel trusted by those I lead.", dimension: "Leadership Confidence & Impact" },
+                    { id: 39, text: "I am comfortable taking on leadership roles.", dimension: "Leadership Confidence & Impact" },
+                    { id: 40, text: "I see myself as a role model in my team.", dimension: "Leadership Confidence & Impact" },
+                    { id: 41, text: "I am always confident in my leadership decisions.", dimension: "Distortion" },
+                    { id: 42, text: "I never make mistakes when leading others.", dimension: "Distortion" },
+                    { id: 43, text: "Everyone I lead always trusts me completely.", dimension: "Distortion" },
+                    { id: 44, text: "I am perfect at handling all leadership situations.", dimension: "Distortion" },
+                    { id: 45, text: "I never feel stressed in leadership roles.", dimension: "Distortion" }
+                ]
+            }
+        };
+
+        // Language Functions
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            updateLanguageDisplay();
+            document.documentElement.lang = lang;
+            
+            // Update direction for Arabic
+            if (lang === 'ar') {
+                document.body.style.direction = 'rtl';
+                document.body.style.textAlign = 'right';
+            } else {
+                document.body.style.direction = 'ltr';
+                document.body.style.textAlign = 'left';
+            }
+        }
+
+        function updateLanguageDisplay() {
+            const elements = document.querySelectorAll('[data-lang-key]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.textContent = translations[currentLanguage][key];
+                }
+            });
+        }
+
+        // Navigation Functions
+        function showSection(sectionId) {
+            const sections = ['home', 'assessments', 'features', 'contact'];
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    element.style.display = section === sectionId ? 'block' : 'none';
+                }
+            });
+
+            // Smooth scroll to section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Modal Functions
+        function showModal(type) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const content = {
+                about: `
+                    <h2>About AuthenCore Analytics</h2>
+                    <p>AuthenCore Analytics is a leading provider of professional assessment tools designed to unlock human potential through scientifically-backed evaluations.</p>
+                    <p>Our mission is to empower individuals and organizations with precision assessments that drive meaningful growth and development.</p>
+                `,
+                privacy: `
+                    <h2>Privacy Policy</h2>
+                    <p>Your privacy is important to us. We are committed to protecting your personal information and maintaining transparency about how we collect, use, and protect your data.</p>
+                    <p>All assessments are conducted with enterprise-grade security and GDPR compliance.</p>
+                `,
+                compliance: `
+                    <h2>Compliance & Standards</h2>
+                    <p>AuthenCore Analytics adheres to the highest standards of data protection, assessment ethics, and professional guidelines.</p>
+                    <p>We are committed to maintaining compliance with international data protection regulations and psychological assessment standards.</p>
+                `,
+                contact: `
+                    <h2>Contact Us</h2>
+                    <p>Get in touch with our team for questions, support, or partnership opportunities.</p>
+                    <p><strong>Email:</strong> info@authencore.com</p>
+                    <p><strong>Support:</strong> support@authencore.com</p>
+                    <p><strong>Business:</strong> business@authencore.com</p>
+                `,
+                support: `
+                    <h2>Support Center</h2>
+                    <p>Need help with your assessment or have technical questions?</p>
+                    <p>Our support team is available to assist you Monday through Friday, 9 AM to 5 PM EST.</p>
+                    <p><strong>Support Email:</strong> support@authencore.com</p>
+                    <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                `
+            };
+
+            modalContent.innerHTML = content[type] || '<h2>Content Coming Soon</h2><p>This section is under development.</p>';
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Sample Report Functions
+        function showSampleReport(assessmentType) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const reportContent = generateSampleReportContent(assessmentType);
+            modalContent.innerHTML = reportContent;
+            modal.style.display = 'block';
+        }
+
+        function generateSampleReportContent(type) {
+            const reports = {
+                innovation: `
+                    <h2>Innovation Mindset Assessment - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Overall Innovation Score: 4.2 (High)</h3>
+                        <p>Strong innovation mindset with excellent potential for creative problem-solving and adaptability.</p>
+                    </div>
+                    <h3>Dimension Breakdown:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Curiosity & Exploration:</strong> 4.5 - Exceptional drive to learn and explore</li>
+                        <li><strong>Risk-Taking & Courage:</strong> 3.8 - Good comfort with calculated risks</li>
+                        <li><strong>Creativity & Imagination:</strong> 4.3 - Strong creative thinking abilities</li>
+                        <li><strong>Resilience & Adaptability:</strong> 4.1 - High adaptability to change</li>
+                        <li><strong>Collaboration & Diversity:</strong> 4.2 - Excellent teamwork skills</li>
+                    </ul>
+                    <h3>Key Recommendations:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Lead innovation workshops and brainstorming sessions</li>
+                        <li>Take on challenging projects requiring creative solutions</li>
+                        <li>Mentor others in innovation thinking</li>
+                        <li>Continue developing risk assessment skills</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('innovation')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `,
+                fvai: `
+                    <h2>Faith & Values Alignment Index - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Overall Alignment Score: 4.1 (High)</h3>
+                        <p>Strong alignment between personal values and faith practices with consistent moral behavior.</p>
+                    </div>
+                    <h3>Dimension Breakdown:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Faith Centrality:</strong> 4.3 - Faith plays central role in decision-making</li>
+                        <li><strong>Values Alignment:</strong> 4.0 - Good consistency between beliefs and actions</li>
+                        <li><strong>Compassion & Service:</strong> 4.2 - Strong commitment to helping others</li>
+                        <li><strong>Forgiveness & Humility:</strong> 3.9 - Good practice of forgiveness and humility</li>
+                        <li><strong>Spiritual Openness:</strong> 4.1 - Open to spiritual growth and dialogue</li>
+                        <li><strong>Moral Consistency:</strong> 4.0 - Consistent ethical behavior</li>
+                    </ul>
+                    <h3>Growth Areas:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Continue developing humility in leadership roles</li>
+                        <li>Explore deeper spiritual practices</li>
+                        <li>Seek opportunities for community service</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('fvai')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `,
+                leadership: `
+                    <h2>Authentic Leadership Assessment - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Overall Leadership Authenticity: 4.0 (High)</h3>
+                        <p>Strong authentic leadership qualities with excellent self-awareness and moral grounding.</p>
+                    </div>
+                    <h3>Dimension Breakdown:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Self-Awareness:</strong> 4.2 - Excellent understanding of personal strengths and weaknesses</li>
+                        <li><strong>Relational Transparency:</strong> 4.1 - Very open and honest in relationships</li>
+                        <li><strong>Balanced Processing:</strong> 3.8 - Good objective decision-making skills</li>
+                        <li><strong>Moral Perspective:</strong> 4.3 - Strong ethical foundation and integrity</li>
+                        <li><strong>Leadership Confidence:</strong> 3.9 - High confidence and positive impact</li>
+                    </ul>
+                    <h3>Development Recommendations:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Continue building on strong moral foundation</li>
+                        <li>Enhance balanced processing skills through diverse input</li>
+                        <li>Leverage high self-awareness for team development</li>
+                        <li>Model transparent communication for team culture</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('leadership')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `,
+                cairplus: `
+                    <h2>CAIR+ Assessment - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Overall Cultural Readiness: 3.9 (High)</h3>
+                        <p>Strong readiness for cultural adaptation with excellent openness and flexibility.</p>
+                    </div>
+                    <h3>Dimension Breakdown:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Cultural Openness:</strong> 4.2 - Highly open to new cultural experiences</li>
+                        <li><strong>Adaptability:</strong> 4.0 - Excellent ability to adapt to change</li>
+                        <li><strong>Communication Skills:</strong> 3.7 - Good cross-cultural communication</li>
+                        <li><strong>Resilience:</strong> 3.9 - Strong resilience in challenging situations</li>
+                        <li><strong>Integration Readiness:</strong> 3.8 - Well-prepared for cultural integration</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('cairplus')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `,
+                careerlaunch: `
+                    <h2>CareerLaunch Assessment - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Career Match Score: 4.1 (Excellent Fit)</h3>
+                        <p>Strong alignment between interests, aptitudes, and recommended career paths.</p>
+                    </div>
+                    <h3>Top Career Recommendations:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Data Scientist:</strong> 95% match - Strong analytical and problem-solving skills</li>
+                        <li><strong>Product Manager:</strong> 92% match - Excellent leadership and strategic thinking</li>
+                        <li><strong>Management Consultant:</strong> 89% match - Strong communication and analytical abilities</li>
+                        <li><strong>UX Research Manager:</strong> 87% match - Good user empathy and research skills</li>
+                        <li><strong>Business Intelligence Analyst:</strong> 85% match - Strong data analysis capabilities</li>
+                    </ul>
+                    <h3>RIASEC Profile:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Investigative:</strong> Very High - Research and analytical work</li>
+                        <li><strong>Enterprising:</strong> High - Leadership and business activities</li>
+                        <li><strong>Conventional:</strong> Moderate - Organized, detailed work</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('careerlaunch')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `,
+                digitalwellness: `
+                    <h2>Digital Wellness Assessment - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Overall Digital Wellness: 3.6 (Good)</h3>
+                        <p>Good digital habits with some areas for improvement in balance and boundaries.</p>
+                    </div>
+                    <h3>Dimension Breakdown:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Digital Balance:</strong> 3.4 - Room for improvement in screen time management</li>
+                        <li><strong>Digital Boundaries:</strong> 3.5 - Good at setting limits but could be more consistent</li>
+                        <li><strong>Digital Productivity:</strong> 4.0 - Excellent use of digital tools for productivity</li>
+                        <li><strong>Digital Relationships:</strong> 3.7 - Good online communication and relationships</li>
+                        <li><strong>Digital Security:</strong> 3.8 - Strong awareness of digital privacy and security</li>
+                    </ul>
+                    <h3>Wellness Action Plan:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Implement scheduled digital breaks throughout the day</li>
+                        <li>Create device-free zones in living spaces</li>
+                        <li>Use digital wellbeing tools to monitor screen time</li>
+                        <li>Practice mindful technology use</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('digitalwellness')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `,
+                genz: `
+                    <h2>Generation Z Future Readiness - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Overall Future Readiness: 4.0 (High)</h3>
+                        <p>Excellent preparation for future challenges with strong digital skills and adaptability.</p>
+                    </div>
+                    <h3>Dimension Breakdown:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Career Clarity:</strong> 3.8 - Good understanding of career goals and pathways</li>
+                        <li><strong>Adaptability & Resilience:</strong> 4.2 - Excellent flexibility and bounce-back ability</li>
+                        <li><strong>Self-Management:</strong> 3.7 - Good time management and self-discipline</li>
+                        <li><strong>Learning Agility:</strong> 4.1 - Strong ability to learn quickly and apply knowledge</li>
+                        <li><strong>Future Orientation:</strong> 4.0 - Positive outlook and planning for the future</li>
+                        <li><strong>Digital Literacy:</strong> 4.3 - Exceptional digital skills and confidence</li>
+                    </ul>
+                    <h3>Future Success Strategies:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Continue developing leadership and communication skills</li>
+                        <li>Explore emerging technologies and their career applications</li>
+                        <li>Build professional networks and mentorship relationships</li>
+                        <li>Develop entrepreneurial thinking and innovation skills</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('genz')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `,
+                relationship: `
+                    <h2>Relationship Compatibility Assessment - Sample Report</h2>
+                    <div style="background: #f8f9fb; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>Overall Compatibility Score: 4.0 (High)</h3>
+                        <p>Strong compatibility with excellent foundation for long-term relationship success.</p>
+                    </div>
+                    <h3>Dimension Breakdown:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Values Alignment:</strong> 4.2 - Excellent shared values and life priorities</li>
+                        <li><strong>Communication Style:</strong> 4.1 - Very good communication patterns</li>
+                        <li><strong>Conflict Resolution:</strong> 3.7 - Good but could improve conflict management</li>
+                        <li><strong>Emotional Intimacy:</strong> 4.2 - Strong emotional connection and support</li>
+                        <li><strong>Future Goals Alignment:</strong> 3.9 - Well-aligned future visions</li>
+                    </ul>
+                    <h3>Relationship Strengths:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Shared core values and life philosophy</li>
+                        <li>Strong emotional bond and mutual support</li>
+                        <li>Open and honest communication</li>
+                        <li>Compatible future goals and dreams</li>
+                    </ul>
+                    <h3>Growth Opportunities:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Develop better conflict resolution strategies</li>
+                        <li>Practice active listening during disagreements</li>
+                        <li>Schedule regular relationship check-ins</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="downloadSamplePDF('relationship')" style="background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer;">Download Full Sample Report</button>
+                    </div>
+                `
+            };
+
+            return reports[type] || '<h2>Sample Report</h2><p>Sample report content coming soon.</p>';
+        }
+
+        function downloadSamplePDF(assessmentType) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(102, 126, 234);
+            doc.text(`${assessmentType.toUpperCase()} Assessment - Sample Report`, 20, 30);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text('AuthenCore Analytics', 20, 50);
+            doc.text('Sample Report - Demo Version', 20, 65);
+            doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 80);
+            
+            doc.setFontSize(14);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Note: This is a Sample Report', 20, 110);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            doc.text('This sample demonstrates the format and content type you will receive', 20, 130);
+            doc.text('after completing the full assessment. Your actual report will include:', 20, 145);
+            
+            doc.text('• Personalized scores based on your responses', 25, 165);
+            doc.text('• Detailed analysis of each dimension', 25, 180);
+            doc.text('• Custom recommendations for your profile', 25, 195);
+            doc.text('• Reflection prompts for personal growth', 25, 210);
+            doc.text('• Professional interpretations and insights', 25, 225);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Ready to get your personalized assessment?', 20, 250);
+            doc.text('Visit authencore.com to start your journey!', 20, 265);
+            
+            // Footer
+            doc.setFontSize(8);
+            doc.setTextColor(102, 126, 234);
+            doc.text('© AuthenCore Analytics - Professional Assessment Platform', 20, 285);
+            
+            doc.save(`${assessmentType}_Sample_Report.pdf`);
+        }
+
+        // Assessment Functions
+        function startAssessment(type) {
+            if (!assessmentData[type]) {
+                alert(`${type} assessment is coming soon! For now, try the Innovation Mindset assessment.`);
+                return;
+            }
+
+            currentAssessmentType = type;
+            assessmentQuestions = assessmentData[type].questions;
+            currentQuestionIndex = 0;
+            userResponses = [];
+
+            // Show user info collection first
+            showUserInfoModal(type);
+        }
+
+        function showUserInfoModal(type) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h2>${assessmentData[type].title}</h2>
+                <p>${assessmentData[type].subtitle}</p>
+                
+                <form id="userInfoForm" style="margin-top: 30px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <label for="fullName" style="display: block; margin-bottom: 5px; font-weight: bold;">Full Name *</label>
+                            <input type="text" id="fullName" required style="width: 100%; padding: 10px; border: 2px solid #e1e5e9; border-radius: 5px;">
+                        </div>
+                        <div>
+                            <label for="email" style="display: block; margin-bottom: 5px; font-weight: bold;">Email *</label>
+                            <input type="email" id="email" required style="width: 100%; padding: 10px; border: 2px solid #e1e5e9; border-radius: 5px;">
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <label for="age" style="display: block; margin-bottom: 5px; font-weight: bold;">Age</label>
+                            <input type="number" id="age" min="16" max="100" style="width: 100%; padding: 10px; border: 2px solid #e1e5e9; border-radius: 5px;">
+                        </div>
+                        <div>
+                            <label for="gender" style="display: block; margin-bottom: 5px; font-weight: bold;">Gender</label>
+                            <select id="gender" style="width: 100%; padding: 10px; border: 2px solid #e1e5e9; border-radius: 5px;">
+                                <option value="">Select (optional)</option>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not-to-say">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-right: 10px;">
+                            Begin Assessment
+                        </button>
+                        <button type="button" onclick="closeModal()" style="background: #f0f0f0; color: #333; padding: 15px 30px; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer;">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            `;
+
+            document.getElementById('userInfoForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const fullName = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                
+                if (!fullName || !email) {
+                    alert('Please fill in your name and email address.');
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+
+                userInfo = {
+                    fullName: fullName,
+                    email: email,
+                    age: document.getElementById('age').value,
+                    gender: document.getElementById('gender').value,
+                    date: new Date().toLocaleDateString()
+                };
+
+                closeModal();
+                showAssessmentInterface();
+            });
+
+            modal.style.display = 'block';
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function showAssessmentInterface() {
+            document.getElementById('mainWebsite').style.display = 'none';
+            document.getElementById('assessmentInterface').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+
+            document.getElementById('assessmentTitle').textContent = assessmentData[currentAssessmentType].title;
+            document.getElementById('assessmentSubtitle').textContent = assessmentData[currentAssessmentType].subtitle;
+            document.getElementById('totalQuestions').textContent = assessmentQuestions.length;
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = assessmentQuestions[currentQuestionIndex];
+            
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionNumber').textContent = `Q${currentQuestionIndex + 1}.`;
+            document.getElementById('questionContent').textContent = question.text;
+
+            // Update progress
+            const progress = ((currentQuestionIndex + 1) / assessmentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            // Generate response options
+            const responseOptions = document.getElementById('responseOptions');
+            responseOptions.innerHTML = `
+                <div class="response-option" onclick="selectResponse(1)" data-value="1">
+                    <input type="radio" name="response" value="1" id="r1">
+                    <label for="r1" class="response-label">Strongly<br>Disagree</label>
+                </div>
+                <div class="response-option" onclick="selectResponse(2)" data-value="2">
+                    <input type="radio" name="response" value="2" id="r2">
+                    <label for="r2" class="response-label">Disagree</label>
+                </div>
+                <div class="response-option" onclick="selectResponse(3)" data-value="3">
+                    <input type="radio" name="response" value="3" id="r3">
+                    <label for="r3" class="response-label">Neutral</label>
+                </div>
+                <div class="response-option" onclick="selectResponse(4)" data-value="4">
+                    <input type="radio" name="response" value="4" id="r4">
+                    <label for="r4" class="response-label">Agree</label>
+                </div>
+                <div class="response-option" onclick="selectResponse(5)" data-value="5">
+                    <input type="radio" name="response" value="5" id="r5">
+                    <label for="r5" class="response-label">Strongly<br>Agree</label>
+                </div>
+            `;
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === assessmentQuestions.length - 1 ? 'Complete Assessment' : 'Next Question';
+
+            // Restore previous response if it exists
+            const existingResponse = userResponses.find(r => r.questionId === question.id);
+            if (existingResponse) {
+                selectResponse(existingResponse.value);
+            }
+        }
+
+        function selectResponse(value) {
+            // Clear previous selections
+            document.querySelectorAll('.response-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+
+            // Select current option
+            const selectedOption = document.querySelector(`[data-value="${value}"]`);
+            selectedOption.classList.add('selected');
+            document.getElementById(`r${value}`).checked = true;
+
+            // Store response
+            const question = assessmentQuestions[currentQuestionIndex];
+            const existingIndex = userResponses.findIndex(r => r.questionId === question.id);
+            
+            const response = {
+                questionId: question.id,
+                dimension: question.dimension,
+                value: parseInt(value)
+            };
+
+            if (existingIndex >= 0) {
+                userResponses[existingIndex] = response;
+            } else {
+                userResponses.push(response);
+            }
+
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < assessmentQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                completeAssessment();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        }
+
+        function completeAssessment() {
+            // Calculate scores
+            const scores = calculateAssessmentScores();
+            
+            // Show results
+            showResults(scores);
+        }
+
+        function calculateAssessmentScores() {
+            const dimensionScores = {};
+            const dimensionCounts = {};
+
+            // Initialize dimension sums and counts
+            userResponses.forEach(response => {
+                if (!dimensionScores[response.dimension]) {
+                    dimensionScores[response.dimension] = 0;
+                    dimensionCounts[response.dimension] = 0;
+                }
+                dimensionScores[response.dimension] += response.value;
+                dimensionCounts[response.dimension]++;
+            });
+
+            // Calculate averages
+            const results = {};
+            Object.keys(dimensionScores).forEach(dimension => {
+                results[dimension] = (dimensionScores[dimension] / dimensionCounts[dimension]).toFixed(2);
+            });
+
+            return results;
+        }
+
+        function showResults(scores) {
+            document.getElementById('assessmentInterface').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+
+            document.getElementById('resultsTitle').textContent = `${assessmentData[currentAssessmentType].title} Results`;
+
+            // Calculate overall score (excluding distortion)
+            const mainDimensions = Object.keys(scores).filter(d => d !== "Distortion");
+            const overallScore = (mainDimensions.reduce((sum, d) => sum + parseFloat(scores[d]), 0) / mainDimensions.length).toFixed(2);
+            const overallLevel = getScoreLevel(overallScore);
+
+            document.getElementById('overallScore').textContent = overallScore;
+            document.getElementById('overallLevel').textContent = `${overallLevel} - Overall Performance`;
+
+            // Display dimension results
+            const resultsContainer = document.getElementById('dimensionResults');
+            resultsContainer.innerHTML = '';
+
+            mainDimensions.forEach(dimension => {
+                const score = scores[dimension];
+                const level = getScoreLevel(score);
+                const interpretation = getInterpretation(score);
+                const prompt = getReflectionPrompt(dimension);
+
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'dimension-card';
+                resultDiv.innerHTML = `
+                    <div class="dimension-name">${dimension}</div>
+                    <div class="dimension-score">${score}</div>
+                    <div class="dimension-level">${level} - ${interpretation}</div>
+                    <div class="reflection-prompt">💡 ${prompt}</div>
+                `;
+                resultsContainer.appendChild(resultDiv);
+            });
+
+            // Check for distortion
+            if (scores.Distortion && parseFloat(scores.Distortion) > 3.5) {
+                const distortionDiv = document.createElement('div');
+                distortionDiv.className = 'dimension-card';
+                distortionDiv.style.borderLeftColor = '#ff6b6b';
+                distortionDiv.innerHTML = `
+                    <div class="dimension-name">Response Validity Check</div>
+                    <div class="dimension-level">Elevated Social Desirability Detected</div>
+                    <div class="reflection-prompt">
+                        Your responses suggest a tendency toward socially desirable answers. 
+                        For maximum growth benefit, consider reflecting honestly on your actual behaviors and preferences.
+                    </div>
+                `;
+                resultsContainer.appendChild(distortionDiv);
+            }
+        }
+
+        function getScoreLevel(score) {
+            const numScore = parseFloat(score);
+            if (numScore >= 4.1) return "High";
+            if (numScore >= 3.1) return "Moderate";
+            if (numScore >= 2.1) return "Low";
+            return "Very Low";
+        }
+
+        function getInterpretation(score) {
+            const numScore = parseFloat(score);
+            if (numScore >= 4.1) return "Strong performance in this area";
+            if (numScore >= 3.1) return "Developing skills and capabilities";
+            if (numScore >= 2.1) return "Needs focused development";
+            return "Requires significant improvement";
+        }
+
+        function getReflectionPrompt(dimension) {
+            const prompts = {
+                "Curiosity & Exploration": "What new topic or skill could you explore this month to expand your knowledge?",
+                "Risk-Taking & Courage": "What calculated risk could you take to advance your goals?",
+                "Creativity & Imagination": "How could you apply creative thinking to a current challenge?",
+                "Resilience & Adaptability": "How do you typically bounce back from setbacks?",
+                "Collaboration & Diversity Openness": "How could you better leverage diverse perspectives in your work?",
+                "Faith Centrality": "How does your faith influence your daily decisions?",
+                "Values Alignment": "Where do you see the strongest alignment between your values and actions?",
+                "Compassion & Service": "What opportunities do you have to serve others?",
+                "Self-Awareness": "What aspects of yourself do you understand best?",
+                "Relational Transparency": "How can you build more authentic relationships?",
+                "Balanced Processing": "How do you ensure you're getting diverse input on decisions?"
+            };
+            return prompts[dimension] || "How can you further develop this area?";
+        }
+
+        function exitAssessment() {
+            if (confirm('Are you sure you want to exit the assessment? Your progress will be lost.')) {
+                returnToHome();
+            }
+        }
+
+        function returnToHome() {
+            document.getElementById('mainWebsite').style.display = 'block';
+            document.getElementById('assessmentInterface').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+            
+            // Reset assessment state
+            currentAssessmentType = '';
+            currentQuestionIndex = 0;
+            assessmentQuestions = [];
+            userResponses = [];
+            userInfo = {};
+        }
+
+        // Report Download Functions
+        function downloadPersonalReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const scores = calculateAssessmentScores();
+
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(102, 126, 234);
+            doc.text(`${assessmentData[currentAssessmentType].title}`, 20, 30);
+            doc.setFontSize(14);
+            doc.text('Personal Development Report', 20, 45);
+
+            // User info
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Name: ${userInfo.fullName}`, 20, 65);
+            doc.text(`Date: ${userInfo.date}`, 20, 75);
+            doc.text(`Email: ${userInfo.email}`, 20, 85);
+
+            // Overall score
+            const mainDimensions = Object.keys(scores).filter(d => d !== "Distortion");
+            const overallScore = (mainDimensions.reduce((sum, d) => sum + parseFloat(scores[d]), 0) / mainDimensions.length).toFixed(2);
+            const overallLevel = getScoreLevel(overallScore);
+
+            doc.setFontSize(16);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Overall Score', 20, 110);
+            doc.setFontSize(14);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`${overallScore} - ${overallLevel}`, 20, 125);
+
+            // Dimension scores
+            let y = 150;
+            doc.setFontSize(14);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Dimension Analysis', 20, y);
+            y += 20;
+
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+
+            mainDimensions.forEach(dimension => {
+                const score = scores[dimension];
+                const level = getScoreLevel(score);
+                const interpretation = getInterpretation(score);
+
+                if (y > 270) {
+                    doc.addPage();
+                    y = 30;
+                }
+
+                doc.setFont(undefined, 'bold');
+                doc.text(`${dimension}: ${score} - ${level}`, 20, y);
+                y += 8;
+                doc.setFont(undefined, 'normal');
+                doc.text(`${interpretation}`, 25, y);
+                y += 8;
+                doc.text(`Reflection: ${getReflectionPrompt(dimension)}`, 25, y);
+                y += 15;
+            });
+
+            // Footer
+            doc.setFontSize(8);
+            doc.setTextColor(102, 126, 234);
+            doc.text('© AuthenCore Analytics - Professional Assessment Platform', 20, 285);
+
+            doc.save(`${userInfo.fullName.replace(/\s+/g, '_')}_${currentAssessmentType}_Personal_Report.pdf`);
+        }
+
+        function downloadProfessionalReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const scores = calculateAssessmentScores();
+
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(102, 126, 234);
+            doc.text(`${assessmentData[currentAssessmentType].title}`, 20, 30);
+            doc.setFontSize(14);
+            doc.text('Professional Report', 20, 45);
+
+            // Candidate info
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Candidate: ${userInfo.fullName}`, 20, 65);
+            doc.text(`Assessment Date: ${userInfo.date}`, 20, 75);
+
+            // Executive Summary
+            const mainDimensions = Object.keys(scores).filter(d => d !== "Distortion");
+            const overallScore = (mainDimensions.reduce((sum, d) => sum + parseFloat(scores[d]), 0) / mainDimensions.length).toFixed(2);
+            const overallLevel = getScoreLevel(overallScore);
+
+            doc.setFontSize(14);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Executive Summary', 20, 100);
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Overall Performance: ${overallScore} (${overallLevel})`, 20, 115);
+
+            // Scores table
+            let y = 140;
+            doc.setFontSize(12);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Assessment Results', 20, y);
+            y += 15;
+
+            // Table header
+            doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
+            doc.setFont(undefined, 'bold');
+            doc.text('Dimension', 20, y);
+            doc.text('Score', 120, y);
+            doc.text('Level', 150, y);
+            y += 10;
+
+            // Table content
+            doc.setFont(undefined, 'normal');
+            mainDimensions.forEach(dimension => {
+                const score = scores[dimension];
+                const level = getScoreLevel(score);
+
+                doc.text(dimension, 20, y);
+                doc.text(score, 120, y);
+                doc.text(level, 150, y);
+                y += 10;
+            });
+
+            // Professional Recommendations
+            y += 15;
+            doc.setFontSize(12);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Professional Recommendations', 20, y);
+            y += 15;
+
+            doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
+
+            const recommendations = [
+                'Provide targeted development opportunities based on assessment results',
+                'Consider strengths when assigning projects and responsibilities',
+                'Offer coaching or mentoring in areas showing lower scores',
+                'Leverage high-scoring dimensions for team contributions',
+                'Create personalized development plans based on specific needs'
+            ];
+
+            recommendations.forEach(rec => {
+                doc.text(`• ${rec}`, 25, y);
+                y += 10;
+            });
+
+            // Footer
+            doc.setFontSize(8);
+            doc.setTextColor(102, 126, 234);
+            doc.text('© AuthenCore Analytics - Confidential Professional Assessment', 20, 285);
+
+            doc.save(`${userInfo.fullName.replace(/\s+/g, '_')}_${currentAssessmentType}_Professional_Report.pdf`);
+        }
+
+        function downloadCertificate() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape');
+            const scores = calculateAssessmentScores();
+
+            // Certificate border
+            doc.setLineWidth(3);
+            doc.setDrawColor(102, 126, 234);
+            doc.rect(20, 20, 257, 170);
+
+            doc.setLineWidth(1);
+            doc.rect(25, 25, 247, 160);
+
+            // Header
+            doc.setFontSize(24);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Certificate of Completion', 148, 60, { align: 'center' });
+
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text(assessmentData[currentAssessmentType].title, 148, 80, { align: 'center' });
+
+            // Recipient
+            doc.setFontSize(14);
+            doc.text('This certificate is presented to', 148, 110, { align: 'center' });
+
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(102, 126, 234);
+            doc.text(userInfo.fullName, 148, 130, { align: 'center' });
+
+            // Details
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(0, 0, 0);
+            doc.text(`For completing the assessment on ${userInfo.date}`, 148, 150, { align: 'center' });
+
+            // Overall score
+            const mainDimensions = Object.keys(scores).filter(d => d !== "Distortion");
+            const overallScore = (mainDimensions.reduce((sum, d) => sum + parseFloat(scores[d]), 0) / mainDimensions.length).toFixed(2);
+            const overallLevel = getScoreLevel(overallScore);
+
+            doc.text(`Performance Level: ${overallLevel} (${overallScore})`, 148, 165, { align: 'center' });
+
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(102, 126, 234);
+            doc.text('AuthenCore Analytics', 50, 180);
+            doc.text('"Empowering human potential with precision assessments."', 148, 180, { align: 'center' });
+            doc.text(userInfo.date, 250, 180, { align: 'right' });
+
+            doc.save(`${userInfo.fullName.replace(/\s+/g, '_')}_${currentAssessmentType}_Certificate.pdf`);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLanguageDisplay();
+            
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const modal = document.getElementById('modal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
