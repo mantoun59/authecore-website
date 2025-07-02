@@ -2041,7 +2041,7 @@
             doc.save(`${userInfo.fullName.replace(/\s+/g, '_')}_${currentAssessmentType}_Professional_Report.pdf`);
         }
 
-        function downloadCertificate() {
+        function downloadCertificate()  {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape');
             const scores = calculateAssessmentScores();
